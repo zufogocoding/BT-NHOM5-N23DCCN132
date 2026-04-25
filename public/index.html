@@ -203,7 +203,7 @@
 <script>
 const log = (msg) => {
   const box = document.getElementById('logBox');
-  box.innerHTML += `\n${new Date().toLocaleTimeString()} - ${msg}`;
+  box.innerHTML += `<br>${new Date().toLocaleTimeString()} - ${msg}`;
   box.scrollTop = box.scrollHeight;
 };
 
