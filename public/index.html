@@ -2,76 +2,254 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Fetch API Demo</title>
+  <title>Express + Fetch Demo</title>
+
   <style>
-    body { font-family: Arial; padding: 20px; }
-    form { margin-bottom: 20px; }
-    input { display: block; margin: 5px 0; padding: 8px; width: 250px; }
-    button { padding: 8px 12px; }
-    .result { margin-top: 10px; padding: 10px; background: #f2f2f2; }
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7f9;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0f766e;
+      margin-bottom: 30px;
+    }
+
+    /* CARD */
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: #0f766e;
+      color: white;
+      padding: 15px 20px;
+      font-weight: bold;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* FORM */
+    label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0f766e;
+      box-shadow: 0 0 0 2px rgba(15,118,110,0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #10b981;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #059669;
+    }
+
+    /* RESULT */
+    .result {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      font-size: 14px;
+      min-height: 60px;
+      white-space: pre-wrap;
+    }
+
+    /* LOG */
+    .log-box {
+      background: #0b1f2a;
+      color: #7dd3fc;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      height: 120px;
+      overflow-y: auto;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .badge-get {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-post {
+      background: #dbeafe;
+      color: #1e3a8a;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
 
-<h2>FORM 1 — GET /api/info</h2>
-<form id="formGet">
-  <input type="text" id="nameGet" placeholder="Tên" required />
-  <input type="number" id="ageGet" placeholder="Tuổi" required />
-  <button type="submit">Gửi GET</button>
-</form>
-<div id="resultGet" class="result"></div>
+<div class="container">
 
-<hr />
+  <h1>🚀 Express + Fetch API Demo</h1>
 
-<h2>FORM 2 — POST /api/register</h2>
-<form id="formPost">
-  <input type="text" id="namePost" placeholder="Tên" required />
-  <input type="number" id="agePost" placeholder="Tuổi" required />
-  <input type="email" id="emailPost" placeholder="Email" required />
-  <button type="submit">Gửi POST</button>
-</form>
-<div id="resultPost" class="result"></div>
+  <div class="card">
+    <div class="card-header">🔥 DEMO LIVE — Gọi API không reload</div>
+
+    <div class="card-body grid">
+
+      <!-- FORM GET -->
+      <div>
+        <span class="badge badge-get">GET /api/info</span>
+
+        <form id="formGet">
+          <label>Tên</label>
+          <input type="text" id="nameGet" placeholder="Nhập tên..." required />
+
+          <label>Tuổi</label>
+          <input type="number" id="ageGet" placeholder="Nhập tuổi..." required />
+
+          <button>Gửi GET /api/info</button>
+        </form>
+
+        <div id="resultGet" class="result">Kết quả hiển thị ở đây...</div>
+      </div>
+
+      <!-- FORM POST -->
+      <div>
+        <span class="badge badge-post">POST /api/register</span>
+
+        <form id="formPost">
+          <label>Tên</label>
+          <input type="text" id="namePost" placeholder="Nhập tên..." required />
+
+          <label>Tuổi</label>
+          <input type="number" id="agePost" placeholder="Nhập tuổi..." required />
+
+          <label>Email</label>
+          <input type="email" id="emailPost" placeholder="Nhập email..." required />
+
+          <button>Gửi POST /api/register</button>
+        </form>
+
+        <div id="resultPost" class="result">Kết quả hiển thị ở đây...</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="card">
+    <div class="card-header">📜 Console Log (giả lập)</div>
+    <div class="card-body">
+      <div id="logBox" class="log-box">// Log sẽ hiển thị ở đây...</div>
+    </div>
+  </div>
+
+</div>
 
 <script>
-// ===== FORM GET =====
+const log = (msg) => {
+  const box = document.getElementById('logBox');
+  box.innerHTML += `\n${new Date().toLocaleTimeString()} - ${msg}`;
+  box.scrollTop = box.scrollHeight;
+};
+
+// ===== GET =====
 document.getElementById('formGet').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById('nameGet').value;
-  const age = document.getElementById('ageGet').value;
+  const name = nameGet.value;
+  const age = ageGet.value;
+
+  log(`GET /api/info?name=${name}&age=${age}`);
 
   try {
     const res = await fetch(`/api/info?name=${name}&age=${age}`);
     const data = await res.json();
 
-    document.getElementById('resultGet').innerHTML =
-      `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-  } catch (err) {
-    document.getElementById('resultGet').innerText = 'Lỗi request';
+    resultGet.textContent = JSON.stringify(data, null, 2);
+  } catch {
+    resultGet.textContent = 'Lỗi request';
   }
 });
 
-// ===== FORM POST =====
+// ===== POST =====
 document.getElementById('formPost').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById('namePost').value;
-  const age = document.getElementById('agePost').value;
-  const email = document.getElementById('emailPost').value;
+  const payload = {
+    name: namePost.value,
+    age: agePost.value,
+    email: emailPost.value
+  };
+
+  log(`POST /api/register`);
 
   try {
     const res = await fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, age, email })
+      body: JSON.stringify(payload)
     });
 
     const data = await res.json();
 
-    document.getElementById('resultPost').innerHTML =
-      `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-  } catch (err) {
-    document.getElementById('resultPost').innerText = 'Lỗi request';
+    resultPost.textContent = JSON.stringify(data, null, 2);
+  } catch {
+    resultPost.textContent = 'Lỗi request';
   }
 });
 </script>
