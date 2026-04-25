@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fetch API Demo</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    form { margin-bottom: 20px; }
+    input { display: block; margin: 5px 0; padding: 8px; width: 250px; }
+    button { padding: 8px 12px; }
+    .result { margin-top: 10px; padding: 10px; background: #f2f2f2; }
+  </style>
+</head>
+<body>
+
+<h2>FORM 1 — GET /api/info</h2>
+<form id="formGet">
+  <input type="text" id="nameGet" placeholder="Tên" required />
+  <input type="number" id="ageGet" placeholder="Tuổi" required />
+  <button type="submit">Gửi GET</button>
+</form>
+<div id="resultGet" class="result"></div>
+
+<hr />
+
+<h2>FORM 2 — POST /api/register</h2>
+<form id="formPost">
+  <input type="text" id="namePost" placeholder="Tên" required />
+  <input type="number" id="agePost" placeholder="Tuổi" required />
+  <input type="email" id="emailPost" placeholder="Email" required />
+  <button type="submit">Gửi POST</button>
+</form>
+<div id="resultPost" class="result"></div>
+
+<script>
+// ===== FORM GET =====
+document.getElementById('formGet').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('nameGet').value;
+  const age = document.getElementById('ageGet').value;
+
+  try {
+    const res = await fetch(`/api/info?name=${name}&age=${age}`);
+    const data = await res.json();
+
+    document.getElementById('resultGet').innerHTML =
+      `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+  } catch (err) {
+    document.getElementById('resultGet').innerText = 'Lỗi request';
+  }
+});
+
+// ===== FORM POST =====
+document.getElementById('formPost').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('namePost').value;
+  const age = document.getElementById('agePost').value;
+  const email = document.getElementById('emailPost').value;
+
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, age, email })
+    });
+
+    const data = await res.json();
+
+    document.getElementById('resultPost').innerHTML =
+      `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+  } catch (err) {
+    document.getElementById('resultPost').innerText = 'Lỗi request';
+  }
+});
+</script>
+
+</body>
+</html>
